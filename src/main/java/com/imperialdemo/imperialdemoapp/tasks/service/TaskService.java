@@ -78,4 +78,10 @@ public class TaskService {
 
     return taskModel;
   }
+
+  public TaskModel getTask(Long taskID) {
+    Optional<TaskModel> task = taskRepository.findById(taskID);
+
+    return task.orElse(null);
+  }
 }

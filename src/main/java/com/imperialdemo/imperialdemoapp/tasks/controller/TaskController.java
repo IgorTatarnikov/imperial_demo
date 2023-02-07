@@ -4,6 +4,8 @@ package com.imperialdemo.imperialdemoapp.tasks.controller;
 import com.imperialdemo.imperialdemoapp.tasks.model.TaskModel;
 import com.imperialdemo.imperialdemoapp.tasks.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedList;
@@ -18,8 +20,19 @@ public class TaskController {
   TaskService taskService;
 
   @PostMapping(path="/create", consumes = "application/json", produces = "application/json")
-  public TaskModel createTask(@RequestBody TaskModel task) {
-    return taskService.createTask(task);
+  public ResponseEntity<TaskModel> createTask(@RequestBody TaskModel task) {
+    TaskModel newTask = taskService.createTask(task);
+
+    if (newTask == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    } else {
+      return new ResponseEntity<>(newTask, HttpStatus.OK);
+    }
+  }
+
+  @GetMapping(path="/get/{taskID}", produces = "application/json")
+  public TaskModel getTask(@PathVariable Long taskID) {
+    return taskService.getTask(taskID);
   }
 
   @PutMapping(path="/delete/{taskID}", consumes = "application/json", produces = "application/json")
@@ -27,7 +40,7 @@ public class TaskController {
     return taskService.deleteTask(taskID);
   }
 
-  @PutMapping(path="/getTaskList", produces = "application/json")
+  @GetMapping(path="/getTaskList", produces = "application/json")
   public List<TaskModel> getTaskList() {
     return taskService.getTaskList();
   }
