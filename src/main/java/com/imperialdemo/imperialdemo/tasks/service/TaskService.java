@@ -1,7 +1,7 @@
-package com.imperialdemo.imperialdemoapp.tasks.service;
+package com.imperialdemo.imperialdemo.tasks.service;
 
-import com.imperialdemo.imperialdemoapp.tasks.model.TaskModel;
-import com.imperialdemo.imperialdemoapp.tasks.repository.TaskRepository;
+import com.imperialdemo.imperialdemo.tasks.model.TaskModel;
+import com.imperialdemo.imperialdemo.tasks.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +16,18 @@ public class TaskService {
   TaskRepository taskRepository;
 
   public TaskModel createTask(TaskModel task) {
-    if (task.getName().isEmpty()) {
+    if (task.getName() == null) {
       return null;
     }
 
-    return taskRepository.save(task);
+    return taskRepository.save(TaskModel.create(task));
   }
 
-  public String deleteTask(long taskID) {
+  public String deleteTask(long taskID) throws NoSuchElementException {
     TaskModel taskModel;
     Optional<TaskModel> task = taskRepository.findById(taskID);
 
-    try {
-      taskModel = task.orElseThrow();
-    } catch (NoSuchElementException noSuchElementException) {
-      return noSuchElementException.getMessage();
-    }
+    taskModel = task.orElseThrow();
 
     taskRepository.delete(taskModel);
 
@@ -43,14 +39,10 @@ public class TaskService {
     return taskRepository.findAll();
   }
 
-  public TaskModel updateTask(TaskModel updatedTask, Long taskID) {
+  public TaskModel updateTask(TaskModel updatedTask, Long taskID) throws NoSuchElementException {
     Optional<TaskModel> task = taskRepository.findById(taskID);
 
-    TaskModel taskModel = task.orElse(null);
-
-    if (taskModel == null) {
-      return null;
-    }
+    TaskModel taskModel = task.orElseThrow();
 
     if (!updatedTask.getName().isBlank()) {
       taskModel.setName(updatedTask.getName());
@@ -69,19 +61,19 @@ public class TaskService {
     return taskModel;
   }
 
-  public TaskModel markTaskComplete(Long taskID) {
+  public TaskModel markTaskComplete(Long taskID) throws NoSuchElementException {
     Optional<TaskModel> task = taskRepository.findById(taskID);
 
-    TaskModel taskModel = task.orElse(null);
+    TaskModel taskModel = task.orElseThrow();
 
     taskModel.setStatus("Complete");
 
     return taskModel;
   }
 
-  public TaskModel getTask(Long taskID) {
+  public TaskModel getTask(Long taskID) throws NoSuchElementException{
     Optional<TaskModel> task = taskRepository.findById(taskID);
 
-    return task.orElse(null);
+    return task.orElseThrow();
   }
 }

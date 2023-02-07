@@ -1,4 +1,4 @@
-package com.imperialdemo.imperialdemoapp;
+package com.imperialdemo.imperialdemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class ImperialDemoAppApplication {
+public class ImperialDemoApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ImperialDemoAppApplication.class, args);
+    SpringApplication.run(ImperialDemoApplication.class, args);
   }
 
   @GetMapping("/hello")
