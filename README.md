@@ -1,4 +1,4 @@
-# imperial_demo
+# Imperial Demo App
 
 Use docker-compose up to start the back end server.
 
