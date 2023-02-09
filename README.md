@@ -2,7 +2,7 @@
 
 Use docker-compose up to start the back end server.
 
-The back end server will listen on port 8080 of localhost.\
+The back end server will listen on port 8080.\
 The database is set up to listen on port 7132. 
 
 ## localhost:8080/task/create
